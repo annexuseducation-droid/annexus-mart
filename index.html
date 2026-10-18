@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANNEXUS MART - Premium Dry Fruits & Nuts</title>
+    
+    <!-- PWA Primary Meta & Web Manifest Link -->
+    <meta name="theme-color" content="#78350f">
+    <meta name="description" content="ANNEXUS MART - Premium Quality Dry Fruits & Nuts delivered directly to your doorstep. We are online...">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ANNEXUS MART">
+    <link rel="apple-touch-icon" href="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&q=80&w=192">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        amber: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            600: '#d97706',
+                            700: '#b45309',
+                            800: '#92400e',
+                            900: '#78350f',
+                            950: '#451a03',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="text-stone-800 antialiased min-h-screen flex flex-col pb-20 md:pb-0">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-amber-950 text-amber-200 text-xs font-medium py-2 px-4 text-center flex justify-between items-center px-6">
+        <span class="inline-flex items-center gap-1.5"><i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400"></i> Fresh Harvest Guarantee & Express Delivery</span>
+        <span class="hidden sm:inline-flex items-center gap-1"><i data-lucide="phone-call" class="w-3.5 h-3.5"></i> Order Line: 03215344656</span>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-stone-200 shadow-sm transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            
+            <!-- Brand Logo & Name -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-700 to-amber-500 flex items-center justify-center text-white shadow-md shadow-amber-900/20 group-hover:scale-105 transition-transform">
+                    <i data-lucide="nut" class="w-7 h-7"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-black tracking-tight text-stone-900 uppercase leading-none">ANNEXUS <span class="text-amber-700">MART</span></h1>
+                    <p class="text-xs font-semibold tracking-wider text-amber-700 lowercase mt-1 flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        we are online...
+                    </p>
+                </div>
+            </a>
+
+            <!-- Search Bar (Desktop) -->
+            <div class="hidden md:flex flex-1 max-w-md mx-6 relative">
+                <i data-lucide="search" class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400"></i>
+                <input type="text" id="searchInput" placeholder="Search almonds, walnuts, dates, berries..." oninput="handleSearch(this.value)" class="w-full pl-10 pr-4 py-2.5 bg-stone-100 rounded-full border border-transparent focus:border-amber-600 focus:bg-white focus:outline-none text-sm transition-all">
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <button onclick="toggleWishlistModal()" class="relative p-2.5 text-stone-600 hover:text-amber-800 hover:bg-stone-100 rounded-full transition-colors">
+                    <i data-lucide="heart" class="w-6 h-6"></i>
+                    <span id="wishlistCount" class="absolute top-1 right-1 w-5 h-5 bg-rose-500 text-white text-xs font-bold rounded-full flex items-center justify-center hidden">0</span>
+                </button>
+
+                <button onclick="toggleCartModal()" class="relative p-2.5 bg-amber-800 text-white hover:bg-amber-900 rounded-full sm:rounded-2xl px-3 sm:px-4 flex items-center gap-2 shadow-md shadow-amber-900/10 transition-all active:scale-95">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                    <span class="hidden sm:inline text-sm font-semibold">Cart</span>
+                    <span id="cartCount" class="w-5 h-5 bg-amber-500 text-amber-950 text-xs font-bold rounded-full flex items-center justify-center">0</span>
+                </button>
+
+                <!-- PWA Install Button -->
+                <button id="pwaInstallBtn" onclick="installPWA()" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-2.5 rounded-2xl flex items-center gap-1.5 shadow-sm transition-all">
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Install App</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Search Bar (Mobile Only) -->
+        <div class="md:hidden px-4 pb-3">
+            <div class="relative">
+                <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400"></i>
+                <input type="text" placeholder="Search dry fruits, nuts, seeds..." oninput="handleSearch(this.value)" class="w-full pl-9 pr-4 py-2 bg-stone-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-600">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+
+        <!-- Hero Section -->
+        <section class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-amber-950 via-amber-900 to-stone-900 text-white shadow-xl">
+            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#d97706_1px,transparent_1px)] [background-size:16px_16px]"></div>
+            <div class="relative z-10 p-6 sm:p-10 md:p-12 max-w-2xl">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold uppercase tracking-widest backdrop-blur-sm border border-amber-500/30 mb-4">
+                    <i data-lucide="badge-check" class="w-4 h-4"></i> 100% Organic & Handpicked
+                </span>
+                <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">Nature's Finest Powerhouses</h2>
+                <p class="mt-3 text-stone-300 text-sm sm:text-base leading-relaxed">Boost your daily energy, immunity, and heart health with our premium assortment of dry fruits, nuts, berries, and seed mixes.</p>
+                
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <a href="#catalog" class="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold rounded-2xl text-sm transition-all shadow-lg shadow-amber-500/20 flex items-center gap-2">
+                        Shop Collection <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                    <a href="https://wa.me/923215344656" target="_blank" class="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-2xl text-sm backdrop-blur-md transition-all flex items-center gap-2 border border-white/20">
+                        <i data-lucide="message-circle" class="w-4 h-4 text-emerald-400"></i> WhatsApp Us
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Filters -->
+        <section id="catalog" class="space-y-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-xl font-bold text-stone-900">Explore Catalog</h3>
+                    <p class="text-xs text-stone-500">Select categories or search items</p>
+                </div>
+                <span id="productCount" class="text-xs font-semibold text-amber-800 bg-amber-100 px-3 py-1 rounded-full">Showing all items</span>
+            </div>
+
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 hide-scrollbar">
+                <button onclick="filterCategory('all', this)" class="category-btn active px-5 py-2.5 rounded-2xl text-sm font-bold whitespace-nowrap transition-all border border-amber-800 bg-amber-800 text-white shadow-sm">All Items</button>
+                <button onclick="filterCategory('nuts', this)" class="category-btn px-5 py-2.5 rounded-2xl text-sm font-semibold text-stone-600 bg-white hover:bg-amber-50 border border-stone-200 whitespace-nowrap transition-all">Nuts</button>
+                <button onclick="filterCategory('dried', this)" class="category-btn px-5 py-2.5 rounded-2xl text-sm font-semibold text-stone-600 bg-white hover:bg-amber-50 border border-stone-200 whitespace-nowrap transition-all">Dried Fruits</button>
+                <button onclick="filterCategory('berries', this)" class="category-btn px-5 py-2.5 rounded-2xl text-sm font-semibold text-stone-600 bg-white hover:bg-amber-50 border border-stone-200 whitespace-nowrap transition-all">Berries</button>
+                <button onclick="filterCategory('seeds', this)" class="category-btn px-5 py-2.5 rounded-2xl text-sm font-semibold text-stone-600 bg-white hover:bg-amber-50 border border-stone-200 whitespace-nowrap transition-all">Seeds</button>
+                <button onclick="filterCategory('mix', this)" class="category-btn px-5 py-2.5 rounded-2xl text-sm font-semibold text-stone-600 bg-white hover:bg-amber-50 border border-stone-200 whitespace-nowrap transition-all">Mix Packs</button>
+            </div>
+        </section>
+
+        <!-- Product Grid -->
+        <section>
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Dynamic insertion via JavaScript -->
+            </div>
+            
+            <div id="noResults" class="hidden text-center py-16 bg-white rounded-3xl border border-stone-200">
+                <i data-lucide="package-x" class="w-12 h-12 mx-auto text-stone-300 mb-3"></i>
+                <h4 class="text-lg font-bold text-stone-700">No items found</h4>
+                <p class="text-sm text-stone-500 mt-1">Try adjusting your search terms or filters.</p>
+            </div>
+        </section>
+
+        <!-- Health Benefits Banner / Guide -->
+        <section class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200/60 rounded-3xl p-6 sm:p-8">
+            <div class="max-w-3xl">
+                <h3 class="text-xl font-black text-amber-950 flex items-center gap-2">
+                    <i data-lucide="heart-pulse" class="w-6 h-6 text-amber-700"></i> Why Incorporate Dry Fruits Daily?
+                </h3>
+                <p class="text-stone-600 text-sm mt-2 leading-relaxed">Dry fruits and nuts are concentrated powerhouses of essential micronutrients, healthy fats, fiber, and antioxidants that help support long-term wellness.</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+                    <div class="bg-white/80 p-4 rounded-2xl border border-amber-100 shadow-sm">
+                        <i data-lucide="shield-check" class="w-6 h-6 text-amber-700 mb-2"></i>
+                        <h4 class="font-bold text-stone-900 text-sm">Heart Wellness</h4>
+                        <p class="text-xs text-stone-500 mt-1">Packed with monounsaturated fats & Omega-3s that support healthy cholesterol.</p>
+                    </div>
+                    <div class="bg-white/80 p-4 rounded-2xl border border-amber-100 shadow-sm">
+                        <i data-lucide="zap" class="w-6 h-6 text-amber-700 mb-2"></i>
+                        <h4 class="font-bold text-stone-900 text-sm">Sustained Energy</h4>
+                        <p class="text-xs text-stone-500 mt-1">Low glycemic index snack providing steady fuel without sugar crashes.</p>
+                    </div>
+                    <div class="bg-white/80 p-4 rounded-2xl border border-amber-100 shadow-sm">
+                        <i data-lucide="brain" class="w-6 h-6 text-amber-700 mb-2"></i>
+                        <h4 class="font-bold text-stone-900 text-sm">Brain & Memory</h4>
+                        <p class="text-xs text-stone-500 mt-1">High levels of Vitamin E, Zinc, and Folate essential for cognitive strength.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 text-xs py-10 border-t border-stone-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="space-y-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-amber-600 flex items-center justify-center text-white">
+                        <i data-lucide="nut" class="w-5 h-5"></i>
+                    </div>
+                    <span class="text-white font-black text-lg tracking-wider">ANNEXUS MART</span>
+                </div>
+                <p class="text-stone-400 leading-relaxed">we are online...</p>
+                <p class="text-stone-400">Delivering nature's ultimate energy boosters straight from handpicked farms to your doorstep.</p>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">Direct Order Line</h4>
+                <a href="https://wa.me/923215344656" target="_blank" class="text-emerald-400 font-bold text-sm inline-flex items-center gap-2 bg-emerald-950/60 border border-emerald-800/50 px-3 py-2 rounded-xl">
+                    <i data-lucide="phone" class="w-4 h-4"></i> WhatsApp: 03215344656
+                </a>
+                <p class="mt-2 text-stone-500">Instant customer support & bulk order booking available 24/7.</p>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">Quality Promise</h4>
+                <ul class="space-y-1.5 text-stone-400">
+                    <li>✓ 100% Organic Certified</li>
+                    <li>✓ Zero Chemical Preservatives</li>
+                    <li>✓ Air-Tight Vacuum Packaging</li>
+                    <li>✓ Money-Back Quality Guarantee</li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase tracking-wider text-[11px]">PWA Features</h4>
+                <p class="text-stone-400 leading-relaxed">Install ANNEXUS MART on your Android or iPhone device for rapid one-tap ordering & offline catalog browsing.</p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-6 border-t border-stone-800 text-center text-stone-500">
+            &copy; <script>document.write(new Date().getFullYear())</script> ANNEXUS MART. All rights reserved. Order via WhatsApp: 03215344656
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Modal Sidebar -->
+    <div id="cartModal" class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm hidden transition-opacity">
+        <div class="fixed inset-y-0 right-0 max-w-md w-full bg-white shadow-2xl flex flex-col">
+            
+            <div class="p-4 sm:p-6 bg-stone-900 text-white flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="shopping-bag" class="w-5 h-5 text-amber-500"></i>
+                    <h3 class="font-bold text-lg">Your Shopping Basket</h3>
+                </div>
+                <button onclick="toggleCartModal()" class="p-2 text-stone-400 hover:text-white rounded-full hover:bg-stone-800">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Cart Items Container -->
+            <div id="cartItemsList" class="flex-grow overflow-y-auto p-4 sm:p-6 space-y-4">
+                <!-- Dynamic Content -->
+            </div>
+
+            <!-- Cart Footer & WhatsApp Checkout -->
+            <div class="p-4 sm:p-6 bg-stone-50 border-t border-stone-200 space-y-4">
+                <div class="space-y-1.5 text-sm">
+                    <div class="flex justify-between text-stone-600">
+                        <span>Subtotal</span>
+                        <span id="cartSubtotal" class="font-semibold text-stone-900">PKR 0</span>
+                    </div>
+                    <div class="flex justify-between text-stone-600">
+                        <span>Estimated Shipping</span>
+                        <span class="text-emerald-700 font-bold">Standard Rates</span>
+                    </div>
+                    <div class="flex justify-between text-base font-extrabold text-stone-900 pt-2 border-t border-stone-200">
+                        <span>Total Amount</span>
+                        <span id="cartTotal" class="text-amber-800">PKR 0</span>
+                    </div>
+                </div>
+
+                <!-- Customer Details Form -->
+                <div class="space-y-2 pt-2">
+                    <input type="text" id="custName" placeholder="Your Full Name *" class="w-full px-3.5 py-2 bg-white border border-stone-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-700 focus:outline-none">
+                    <textarea id="custAddress" rows="2" placeholder="Delivery Address with City *" class="w-full px-3.5 py-2 bg-white border border-stone-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-700 focus:outline-none"></textarea>
+                </div>
+
+                <button onclick="checkoutWhatsApp()" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 active:scale-95 transition-all text-sm">
+                    <i data-lucide="message-circle" class="w-5 h-5"></i>
+                    Send Order to WhatsApp (03215344656)
+                </button>
+                <p class="text-[11px] text-stone-400 text-center">Order details & delivery address will automatically format into WhatsApp.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail / Nutrition Modal -->
+    <div id="productModal" class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white max-w-lg w-full rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="relative h-56 bg-stone-100">
+                <img id="modalImg" src="" alt="" class="w-full h-full object-cover">
+                <button onclick="closeProductModal()" class="absolute top-3 right-3 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 backdrop-blur-sm">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <span id="modalBadge" class="absolute bottom-3 left-3 bg-amber-800 text-white text-xs font-bold px-3 py-1 rounded-full"></span>
+            </div>
+            
+            <div class="p-6 overflow-y-auto space-y-4">
+                <div>
+                    <h3 id="modalTitle" class="text-xl font-extrabold text-stone-900"></h3>
+                    <p id="modalOrigin" class="text-xs text-amber-800 font-semibold mt-0.5"></p>
+                </div>
+
+                <p id="modalDesc" class="text-stone-600 text-xs leading-relaxed"></p>
+
+                <!-- Health Benefits -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-stone-400 mb-2">Key Health Benefits</h4>
+                    <ul id="modalBenefits" class="space-y-1.5 text-xs text-stone-700"></ul>
+                </div>
+
+                <!-- Nutritional Breakdown -->
+                <div class="bg-stone-50 p-3.5 rounded-2xl border border-stone-200">
+                    <h4 class="text-xs font-bold text-stone-900 mb-2 flex items-center gap-1.5">
+                        <i data-lucide="activity" class="w-4 h-4 text-amber-700"></i> Nutritional Values (per 100g)
+                    </h4>
+                    <div class="grid grid-cols-4 gap-2 text-center text-xs">
+                        <div class="bg-white p-2 rounded-xl border border-stone-200">
+                            <span class="block text-stone-400 text-[10px]">Calories</span>
+                            <span id="nutrCal" class="font-bold text-stone-800"></span>
+                        </div>
+                        <div class="bg-white p-2 rounded-xl border border-stone-200">
+                            <span class="block text-stone-400 text-[10px]">Protein</span>
+                            <span id="nutrProt" class="font-bold text-stone-800"></span>
+                        </div>
+                        <div class="bg-white p-2 rounded-xl border border-stone-200">
+                            <span class="block text-stone-400 text-[10px]">Carbs</span>
+                            <span id="nutrCarb" class="font-bold text-stone-800"></span>
+                        </div>
+                        <div class="bg-white p-2 rounded-xl border border-stone-200">
+                            <span class="block text-stone-400 text-[10px]">Healthy Fat</span>
+                            <span id="nutrFat" class="font-bold text-stone-800"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wishlist Modal -->
+    <div id="wishlistModal" class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white max-w-md w-full rounded-3xl shadow-2xl p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-stone-200 pb-3">
+                <h3 class="text-lg font-bold text-stone-900 flex items-center gap-2">
+                    <i data-lucide="heart" class="w-5 h-5 text-rose-500 fill-rose-500"></i> Saved Favorites
+                </h3>
+                <button onclick="toggleWishlistModal()" class="p-1.5 text-stone-400 hover:text-stone-700 rounded-full">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div id="wishlistItemsList" class="space-y-3 max-h-80 overflow-y-auto">
+                <!-- Dynamic insertion -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-stone-200 py-2 px-6 flex justify-between items-center text-xs">
+        <a href="#catalog" class="flex flex-col items-center text-amber-800 font-bold">
+            <i data-lucide="store" class="w-5 h-5"></i>
+            <span>Shop</span>
+        </a>
+        <button onclick="toggleWishlistModal()" class="flex flex-col items-center text-stone-500 hover:text-amber-800">
+            <i data-lucide="heart" class="w-5 h-5"></i>
+            <span>Saved</span>
+        </button>
+        <button onclick="toggleCartModal()" class="flex flex-col items-center text-stone-500 hover:text-amber-800 relative">
+            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+            <span>Cart</span>
+            <span id="mobileCartCount" class="absolute -top-1 -right-2 w-4 h-4 bg-amber-700 text-white text-[10px] font-bold rounded-full flex items-center justify-center">0</span>
+        </button>
+        <a href="https://wa.me/923215344656" target="_blank" class="flex flex-col items-center text-emerald-600 font-bold">
+            <i data-lucide="message-circle" class="w-5 h-5"></i>
+            <span>WhatsApp</span>
+        </a>
+    </nav>
+
+    <!-- Application JavaScript Scripts -->
+    <script src="products.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
